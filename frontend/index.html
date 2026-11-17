@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sherlock OSINT</title>
+    <link rel="stylesheet" href="/vendor/leaflet/leaflet.css" />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="brand">
+          <div class="brand-mark">S</div>
+          <div>
+            <h1>SHERLOCK <span>OSINT</span></h1>
+            <p>Plateforme de recherche d'informations publiques multi-modules</p>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <span id="api-status" class="badge badge-muted">Connexion...</span>
+        </div>
+      </header>
+
+      <main class="grid">
+        <section class="panel form-panel">
+          <div class="panel-head">
+            <h2>Nouvelle analyse</h2>
+            <span class="panel-sub">Choisissez un ou plusieurs modules</span>
+          </div>
+
+          <form id="scan-form">
+            <label class="field-label" for="target">Cible</label>
+            <input
+              id="target"
+              name="target"
+              type="text"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="ex: alice_dev"
+              required
+            />
+
+            <div class="field-label module-title">Modules</div>
+            <div id="module-list" class="module-list"></div>
+
+            <details class="options">
+              <summary>Options avancées</summary>
+              <div class="options-body">
+                <div class="option-row">
+                  <label for="timeout">Timeout (s)</label>
+                  <input id="timeout" type="number" min="1" max="180" placeholder="20" />
+                </div>
+                <div class="option-row">
+                  <label for="sites">Sites (Sherlock)</label>
+                  <input
+                    id="sites"
+                    type="text"
+                    placeholder="GitHub, Twitter, Instagram"
+                    spellcheck="false"
+                  />
+                </div>
+                <div class="option-row">
+                  <label for="proxy">Proxy</label>
+                  <input
+                    id="proxy"
+                    type="text"
+                    placeholder="socks5://127.0.0.1:9050"
+                    spellcheck="false"
+                  />
+                </div>
+                <label class="checkbox-row">
+                  <input id="nsfw" type="checkbox" />
+                  <span>Inclure les sites NSFW (Sherlock)</span>
+                </label>
+              </div>
+            </details>
+
+            <button id="submit-btn" type="submit">
+              <span class="button-label">Lancer l'analyse</span>
+              <span class="spinner" aria-hidden="true"></span>
+            </button>
+
+            <p class="disclaimer">
+              Recherche sur des données publiques uniquement. Utilisez cet outil de
+              façon responsable et conforme à la loi. Les résultats sont des
+              indications à vérifier manuellement.
+            </p>
+          </form>
+        </section>
+
+        <section class="panel results-panel">
+          <div class="panel-head">
+            <h2>Résultats en direct</h2>
+            <span id="scan-state" class="badge badge-muted">En attente</span>
+          </div>
+
+          <div id="scan-meta" class="scan-meta">
+            <span id="scan-target">Aucune analyse en cours</span>
+            <span id="scan-id" class="mono"></span>
+          </div>
+
+          <div class="progress-wrap">
+            <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+            <span id="progress-label" class="progress-label">—</span>
+          </div>
+
+          <div id="module-status" class="module-status"></div>
+
+          <details id="map-panel" class="map-panel" hidden>
+            <summary>Cartographie des points détectés</summary>
+            <div id="map" class="map"></div>
+            <div id="map-fallback" class="map-fallback" hidden></div>
+          </details>
+
+          <div id="findings" class="findings">
+            <div class="empty-state">
+              <div class="empty-icon">◎</div>
+              <p>Les résultats apparaîtront ici en temps réel.</p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <section class="panel history-panel">
+        <div class="panel-head">
+          <h2>Historique</h2>
+          <button id="refresh-history" class="ghost-btn" type="button">Actualiser</button>
+        </div>
+        <div id="history" class="history">
+          <p class="empty-history">Aucune analyse enregistrée.</p>
+        </div>
+      </section>
+
+      <footer>
+        Sherlock OSINT v0.1 · Moteur Sherlock 0.16 · Données publiques · Usage responsable
+      </footer>
+    </div>
+
+    <script src="/vendor/leaflet/leaflet.js"></script>
+    <script src="/app.js"></script>
+  </body>
+</html>
